@@ -81,11 +81,12 @@ Sem isso, o sistema não permitirá a criação de contas de clientes.
 
 Os dados são salvos localmente em arquivos .json dentro da pasta do projeto:
 
-**Arquivo**             **Conteúdo**
-`clientes.json`         Dados dos clientes
-`adms.json`             Dados dos administradores
-`produtos.json`         Lista de produtos da loja
-`carrinho.json`         Itens adicionados ao carrinho de cada cliente
+| **Arquivo**             | **Conteúdo**                                  |
+|-------------------------|-----------------------------------------------|
+| `clientes.json`         | Dados dos clientes                            |
+| `adms.json`             | Dados dos administradores                     |
+| `produtos.json`         | Lista de produtos da loja                     |
+| `carrinho.json`         | Itens adicionados ao carrinho de cada cliente |
 
 ---
 
@@ -169,7 +170,11 @@ Este programa está licenciado sob a licença **MIT**. Consulte o arquivo `LICEN
 ## 👤 Autor
 
 **Kavilly Kauã**
+
 Estudante de **Análise e Desenvolvimento de Sistemas (ADS) - IFRN**
+
 💼 Projeto acadêmico / estudo de lógica e POO com Python
+
 📧 Contato: kavillykaua@gmail.com
+
 🌐 GitHub: github.com/kauasantos-dev
