@@ -48,12 +48,14 @@ Um sistema completo de **loja virtual em terminal**, desenvolvido em **Python**,
 
 ## Estrutura do Projeto
 
+```text
 ecommerce-python/
 │
 ├── e_commerce.py    # Lógica POO do projeto
 ├── main.py          # Arquivo principal com menus e fluxo da aplicação
 ├── config.py        # Classe Paths: caminhos dos arquivos salvos
 └── README.md        # Este arquivo
+```
 
 ---
 
