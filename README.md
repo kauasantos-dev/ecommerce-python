@@ -169,14 +169,13 @@ Este programa está licenciado sob a licença **MIT**. Consulte o arquivo `LICEN
 
 ---
 
-## 👤 Autor
+## Autor
 
 **Kavilly Kauã**
 
 Estudante de **Análise e Desenvolvimento de Sistemas (ADS) - IFRN**
 
-💼 Projeto acadêmico / estudo de lógica e POO com Python
+**🌐 Contato:**
 
-📧 Contato: kavillykaua@gmail.com
-
-🌐 GitHub: github.com/kauasantos-dev
+📧 [kavillykaua@gmail.com](mailto:kavillykaua@gmail.com)  
+💻 [GitHub | kauasantos-dev](github.com/kauasantos-dev)
