@@ -50,34 +50,76 @@ def menu_cliente():
 def menu_adm():
     print("1- Ver produtos da loja\n2- Buscar produto\n3- Adicionar novo produto\n4- Remover produto\n5- Atualizar preço\n6- Atualizar estoque\n7- Sair\n")
 
-def ver_produtos(usuario):
-    lista_produtos = usuario.mostrar_produtos()
-    if lista_produtos:
-        print("\nPRODUTOS DA LOJA:\n")
-        for produto in lista_produtos:
-            for chave, valor in produto.items():
-                if chave == 'Preço':
-                    print(f"{chave}: R${valor:.2f}")
-                elif chave == 'Estoque':
-                    print(f"{chave}: {valor}\n")
-                else:
-                    print(f"{chave}: {valor}")
-    else:
-        print("Não há produtos disponíveis na loja.\n")
+def ver_ou_buscar_produtos(instancia, opcao_selecionada):
+    """
+    Verifica a opção do menu selecionada pelo o usuário e chama a função `exibir_produtos`.
 
-def buscar_produto(usuario, nome_produto):
-    produto_encontrado = usuario.buscar_produto(nome_produto)
-    if produto_encontrado:
-        print("\nPRODUTO ENCONTRADO:\n")
-        for chave, valor in produto_encontrado.items():
+    Args:
+        instancia (Cliente | Administrador):
+            Objeto criado a partir da classe `Cliente` ou `Administrador`.
+            Ambas possuem dois métodos em comum:
+                - mostrar_produtos_loja(): retorna uma lista com todos os produtos disponíveis na loja.
+                - buscar_produto(nome_produto): retorna um produto específico informado pelo o usuário.
+        
+        opcao_selecionada (str):
+            Opção do menu selecionada pelo usuário.
+            Pode ser:
+                - '1': Ver todos os produtos da loja.
+                - '2': Buscar um produto específico.
+    """
+    produtos_loja = instancia.mostrar_produtos_loja()
+    if not produtos_loja:
+        print("Não há produtos disponíveis na loja.\n")
+    else:
+        if opcao_selecionada == '1':
+            print("PRODUTOS DA LOJA:\n")
+            exibir_produto(produtos_loja)
+        
+        elif opcao_selecionada == '2':
+            nome_produto = input("Informe o nome do produto: ").strip()
+            produto_encontrado = instancia.buscar_produto(nome_produto)
+            if produto_encontrado:
+                print("PRODUTO ENCONTRADO:\n")
+                exibir_produto(produto_encontrado)
+            else:
+                print("Nenhum produto encontrado.\n")
+                
+def exibir_produto(produtos_loja):
+    """
+    Exibe as informações de um ou mais produtos da loja.
+
+    Args:
+        produtos_loja (list | dict):
+            Produtos que serão exibidos ao usuário.
+            Pode ser uma lista de dicionários (todos os produtos da loja).
+            Ou um único dicionário (produto específico).
+    """
+    def imprimir(produto):
+        """
+        Imprime as informações do produto (nome, preço, estoque).
+
+        Args:
+            produto (dict): 
+                Dicionário contendo os dados do produto, com as chaves:
+                - 'Nome': Nome do produto.
+                - 'Preço': Preço do produto.
+                - 'Estoque': Estoque do produto.
+        """
+        for chave, valor in produto.items():
             if chave == 'Preço':
                 print(f"{chave}: R${valor:.2f}")
             elif chave == 'Estoque':
                 print(f"{chave}: {valor}\n")
             else:
                 print(f"{chave}: {valor}")
-    else:
-        print("Nenhum produto encontrado.\n")
+                print("-" * 30)
+    
+    if isinstance(produtos_loja, list):
+        for produto in produtos_loja:
+            imprimir(produto)
+
+    elif isinstance(produtos_loja, dict):
+        imprimir(produtos_loja)
 
 def ver_carrinho():
     carrinho = cliente.ver_carrinho()
@@ -110,8 +152,7 @@ def fazer_pedido(usuario, nome_produto):
             if produto['Nome'].lower() == nome_produto.lower():
                 produto_encontrado = produto
                 break 
-        buscar_produto(usuario, nome_produto)
-
+        
         print("INFORME O ENDEREÇO DE ENTREGA\n")
         endereco()
         while True:
@@ -222,13 +263,9 @@ def atualizar_preco_estoque(opcao_adm):
         else:
             print("Produto não encontrado.\n")
 
-def opcao_selecionada_cliente(instancia, opcao_cliente):
-    if opcao_cliente == '1':
-        ver_produtos(instancia)
-                
-    elif opcao_cliente == '2':
-        nome_produto = input("Informe o nome do produto: ")
-        buscar_produto(instancia, nome_produto)
+def opcao_selecionada_cliente(instancia_cliente, opcao_cliente):
+    if opcao_cliente == '1' or opcao_cliente == '2':
+        ver_ou_buscar_produtos(instancia_cliente, opcao_cliente)
                 
     elif opcao_cliente == '3':
         ver_carrinho()
@@ -239,18 +276,14 @@ def opcao_selecionada_cliente(instancia, opcao_cliente):
                 
     elif opcao_cliente == '5':
         nome_produto = input("Informe o nome do produto: ")
-        fazer_pedido(instancia, nome_produto)
+        fazer_pedido(instancia_cliente, nome_produto)
                 
     else:
         print("Opção inválida. Por favor, selecione uma das opções disponíveis.\n")
 
-def opcao_selecionada_adm(instancia, opcao_adm):
-    if opcao_adm == '1':
-        ver_produtos(instancia)
-                
-    elif opcao_adm == '2':
-        nome_produto = input("Informe o nome do produto: ")
-        buscar_produto(instancia, nome_produto)
+def opcao_selecionada_adm(instancia_adm, opcao_adm):
+    if opcao_adm == '1' or opcao_adm == '2':
+        ver_ou_buscar_produtos(instancia_adm, opcao_adm)
                 
     elif opcao_adm == '3':
         while True:
