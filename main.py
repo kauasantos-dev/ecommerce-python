@@ -4,6 +4,34 @@ import sys
 
 print("\n===== LOJA ONLINE =====\n")
 
+def solicitar_dados(mensagem_input, validador):
+    """
+    Solicita um dado ao usuário e valida o valor informado.
+
+    Args:
+        mensagem_input (str):
+            Texto exibido ao solicitar o dado via input().
+        
+        validador (callable):
+            Função ou método de validação pertencente à classe `Validador`.
+            Deve lançar um `ValueError` caso o valor informado seja inválido.
+
+    Returns:
+        Any:
+            Dado validado e aprovado pelo método de validação utilizado.
+    
+    Observações:
+        O dado só é retornado se atender a todas as validações do método.
+        Caso contrário, o loop continuará até que o usuário informe um valor válido.
+    """
+    while True:
+        try:
+            dado_informado = validador(input(mensagem_input).strip())
+            return dado_informado
+        except ValueError as erro:
+            print(f"Erro: {erro}. Tente novamente.\n")
+            continue
+
 def validar_dados():
     while True:
         try:
