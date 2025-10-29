@@ -32,21 +32,39 @@ def solicitar_dados(mensagem_input, validador):
             print(f"Erro: {erro}. Tente novamente.\n")
             continue
 
-def validar_dados():
-    while True:
-        try:
-            nome = Validador.validar_nome(input("Crie seu nome de usuário: "))
-            email = Validador.validar_email(input("Digite seu e-mail: "))
-            senha = Validador.validar_senha(input("Crie sua senha: "))
-            id_usuario = str(uuid.uuid4())
-            return {'Nome': nome, 'E-mail': email, 'Senha': senha, 'ID': id_usuario}
-        except ValueError as erro:
-            print("Erro:", erro, "Tente novamente.\n")
+def dados_para_abrir_conta():
+    """
+    Solicita e valida dados necessários para criar uma nova conta.
+
+    Utiliza a função `solicitar_dados` para receber:
+        - Nome de usuário
+        - E-mail
+        - Senha
+    
+        Gera automaticamente um ID único para o usuário.
+
+    Returns:
+        False: Caso o e-mail informado já esteja cadastrado em uma conta.
+        dict: Dicionário contendo os dados informados pelo o usuário:
+            - 'Nome': nome de usuário.
+            - 'E-mail': e-mail do usuário.
+            - 'Senha': senha do usuário.
+            - 'ID': identificação exclusiva do usuário.
+    """
+    nome = Validador.validar_nome(input("Crie seu nome de usuário: "))
+    email = Validador.validar_email(input("Digite seu e-mail: "))
+    senha = Validador.validar_senha(input("Crie sua senha: "))
+    id_usuario = str(uuid.uuid4())
+    verificar_existencia_email = criar_conta(email)
+    if verificar_existencia_email:
+        return False
+    else:
+        return {'Nome': nome, 'E-mail': email, 'Senha': senha, 'ID': id_usuario}
 
 verificar_conta = AbrirArquivo.arquivo_r(Paths.save_adms)
 if not verificar_conta:
     print("CRIE SUA CONTA DE ADMINISTRADOR(A)\n")
-    dados_adm = [validar_dados()]
+    dados_adm = [dados_para_abrir_conta()]
     AbrirArquivo.arquivo_w(Paths.save_adms, dados_adm)
     print("Conta criada com sucesso!\n")
 
@@ -375,18 +393,17 @@ while True:
             print("E-mail ou senha incorreta. Tente novamente.\n")    
 
     elif opcao == '2':
-        novo_cliente = validar_dados()
-        criar = criar_conta(novo_cliente['E-mail'])
-        if not criar:
+        novo_cliente = dados_para_abrir_conta()
+        if not novo_cliente:
+            print("ERRO: Já existe uma conta com esse e-mail.\n")
+        else:
             lista_clientes = AbrirArquivo.arquivo_r(Paths.save_clientes)
             if lista_clientes:
                 lista_clientes.append(novo_cliente)
             else:
                 lista_clientes = [novo_cliente]
             AbrirArquivo.arquivo_w(Paths.save_clientes, lista_clientes)
-            print("Conta criada com sucesso!\n")
-        else:
-            print("Já existe uma conta com esse e-mail.\n")
+            print("CONTA CRIADA COM SUCESSO!\n")
     
     elif opcao == '3':
         print("Programa encerrado.")
