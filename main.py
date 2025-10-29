@@ -55,7 +55,7 @@ def dados_para_abrir_conta():
     email = Validador.validar_email(input("Digite seu e-mail: "))
     senha = Validador.validar_senha(input("Crie sua senha: "))
     id_usuario = str(uuid.uuid4())
-    verificar_existencia_email = criar_conta(email)
+    verificar_existencia_email = emails_cadastrados(email)
     if verificar_existencia_email:
         return False
     else:
@@ -68,7 +68,7 @@ if not verificar_existencia_adm:
     AbrirArquivo.arquivo_w(Paths.save_adms, dados_adm)
     print("CONTA CRIADA COM SUCESSO!\n")
 
-def verificar_existencia_email(email):
+def emails_cadastrados(email):
     lista_clientes = AbrirArquivo.arquivo_r(Paths.save_clientes)
     lista_adms = AbrirArquivo.arquivo_r(Paths.save_adms)
     for administrador in lista_adms:
