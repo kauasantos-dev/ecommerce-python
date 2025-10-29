@@ -61,14 +61,14 @@ def dados_para_abrir_conta():
     else:
         return {'Nome': nome, 'E-mail': email, 'Senha': senha, 'ID': id_usuario}
 
-verificar_conta = AbrirArquivo.arquivo_r(Paths.save_adms)
-if not verificar_conta:
+verificar_existencia_adm = AbrirArquivo.arquivo_r(Paths.save_adms)
+if not verificar_existencia_adm:
     print("CRIE SUA CONTA DE ADMINISTRADOR(A)\n")
     dados_adm = [dados_para_abrir_conta()]
     AbrirArquivo.arquivo_w(Paths.save_adms, dados_adm)
-    print("Conta criada com sucesso!\n")
+    print("CONTA CRIADA COM SUCESSO!\n")
 
-def criar_conta(email):
+def verificar_existencia_email(email):
     lista_clientes = AbrirArquivo.arquivo_r(Paths.save_clientes)
     lista_adms = AbrirArquivo.arquivo_r(Paths.save_adms)
     for administrador in lista_adms:
@@ -269,14 +269,14 @@ def endereco():
             print("Erro: ", erro, " Tente novamente.\n")
             continue
     
-def adicionar_produto(nome, preco, estoque):
+def adicionar_produto_loja(nome, preco, estoque):
     adicionar = adm.adicionar_produto(nome, preco, estoque)
     if adicionar:
         print("O produto foi adicionado a sua loja!\n")
     else:
         print("Esse produto já está presente na loja.\n")
 
-def remover_produto(nome_produto):
+def remover_produto_loja(nome_produto):
     produto_removido = adm.remover_produto(nome_produto)
     if produto_removido:
         print("Produto removido com sucesso!\n")
@@ -341,11 +341,11 @@ def opcao_selecionada_adm(instancia_adm, opcao_adm):
             except ValueError as erro:
                 print("Erro: ", erro, " Tente novamente.\n")
                 continue
-        adicionar_produto(nome_produto, preco, estoque)
+        adicionar_produto_loja(nome_produto, preco, estoque)
                 
     elif opcao_adm == '4':
         nome_produto = input("Digite o nome do produto: ")
-        remover_produto(nome_produto)
+        remover_produto_loja(nome_produto)
                 
     elif opcao_adm == '5':
         atualizar_preco_estoque(opcao_adm)
