@@ -80,13 +80,28 @@ def emails_cadastrados(email):
                 return True
     return False
 
-def login(email, senha):
-    conta_cliente = Cliente.verificar_email_senha(email, senha)
-    conta_adm = Administrador.verificar_email_senha(email, senha)
-    if conta_cliente:
-        return 'cliente'
-    elif conta_adm:
-        return 'adm'
+def fazer_login():
+    """
+    Pede ao usuário e-mail e senha para fazer login.
+
+    Returns:
+        Cliente:
+            Instância da classe `Cliente`, caso o e-mail informado esteja cadastrado em uma conta de cliente.
+
+        Administrador:
+            Instância da classe `Administrador`, caso o e-mail informado esteja cadastrado em uma conta de administrador.
+
+        bool:
+            Retorna `False` se o e-mail informado não estiver cadastrado em nenhuma conta. 
+    """
+    email = input("Digite seu e-mail: ").strip()
+    senha = input("Digite sua senha: ").strip()
+    conta_clientes = Cliente.verificar_email_senha(email, senha)
+    conta_adms = Administrador.verificar_email_senha(email, senha)
+    if conta_clientes:
+        return Cliente(email, senha)
+    elif conta_adms:
+        return Administrador(email, senha)
     else:
         return False
     
@@ -362,33 +377,28 @@ while True:
     opcao = input()
 
     if opcao == '1':
-        email = input("Digite seu e-mail: ")
-        senha = input("Digite sua senha: ")
-        fazer_login = login(email, senha)
-
-        if fazer_login == 'cliente':
-            cliente = Cliente(email, senha)
-            print("Login efetuado com sucesso!\n")
+        login = fazer_login()
+        if isinstance(login, Cliente):
+            print("LOGIN EFETUADO COM SUCESSO!\n")
             while True:
                 print("\nMENU DE OPÇÕES (DIGITE O NÚMERO DA OPÇÃO):\n")
                 menu_cliente()
-                opcao_cliente = input()
+                opcao_cliente = input().strip()
                 if opcao_cliente == '6':
                     break
                 else:
-                    opcao_selecionada_cliente(cliente, opcao_cliente)
+                    opcao_selecionada_cliente(login, opcao_cliente)
         
-        elif fazer_login == 'adm':
-            adm = Administrador(email, senha)
-            print("Login efetuado com sucesso!\n")
+        elif isinstance(login, Administrador):
+            print("LOGIN EFETUADO COM SUCESSO!\n")
             while True:
                 print("\nMENU DE OPÇÕES (DIGITE O NÚMERO DA OPÇÃO):\n")
                 menu_adm()
-                opcao_adm = input()
+                opcao_adm = input().strip()
                 if opcao_adm == '7':
                     break
                 else:
-                    opcao_selecionada_adm(adm, opcao_adm)
+                    opcao_selecionada_adm(opcao_adm)
         else:
             print("E-mail ou senha incorreta. Tente novamente.\n")    
 
