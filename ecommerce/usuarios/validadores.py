@@ -1,6 +1,6 @@
 import unicodedata
 
-class Validador:
+class ValidarUsuario:
     @staticmethod
     def validar_nome(nome):
         if nome.replace(" ", "").isalnum():
@@ -55,7 +55,7 @@ class Validador:
             raise ValueError("O domínio do e-mail não pode começar ou terminar com caracteres especiais.")
         return email
     
-    # A partir daqui criar uma classe ValidarProduto para melhor organização
+class ValidarProduto:
     @staticmethod
     def validar_preco(preco):
         try:
