@@ -1,3 +1,7 @@
+from ecommerce.usuarios import validadores
+from login import fazer_login
+import uuid
+
 def solicitar_dados(mensagem_input, validador):
     """
     Solicita um dado ao usuário e valida o valor informado.
@@ -45,11 +49,11 @@ def dados_para_abrir_conta():
             - 'Senha': senha do usuário.
             - 'ID': identificação exclusiva do usuário.
     """
-    nome = Validador.validar_nome(input("Crie seu nome de usuário: "))
-    email = Validador.validar_email(input("Digite seu e-mail: "))
-    senha = Validador.validar_senha(input("Crie sua senha: "))
+    nome = validadores.ValidarUsuario.validar_nome(input("Crie seu nome de usuário: "))
+    email = validadores.ValidarUsuario.validar_email(input("Digite seu e-mail: "))
+    senha = validadores.ValidarUsuario.validar_senha(input("Crie sua senha: "))
     id_usuario = str(uuid.uuid4())
-    verificar_existencia_email = emails_cadastrados(email)
+    verificar_existencia_email = fazer_login.emails_cadastrados(email)
     if verificar_existencia_email:
         return False
     else:
