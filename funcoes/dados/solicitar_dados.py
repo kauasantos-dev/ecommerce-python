@@ -49,9 +49,9 @@ def dados_para_abrir_conta():
             - 'Senha': senha do usuário.
             - 'ID': identificação exclusiva do usuário.
     """
-    nome = validadores.ValidarUsuario.validar_nome(input("Crie seu nome de usuário: "))
-    email = validadores.ValidarUsuario.validar_email(input("Digite seu e-mail: "))
-    senha = validadores.ValidarUsuario.validar_senha(input("Crie sua senha: "))
+    nome = solicitar_dados("Crie seu nome de usuário: ", validadores.ValidarUsuario.validar_nome)
+    email = solicitar_dados("Digite seu e-mail: ", validadores.ValidarUsuario.validar_email)
+    senha = solicitar_dados("Digite sua senha: ", validadores.ValidarUsuario.validar_senha)
     id_usuario = str(uuid.uuid4())
     verificar_existencia_email = fazer_login.emails_cadastrados(email)
     if verificar_existencia_email:
