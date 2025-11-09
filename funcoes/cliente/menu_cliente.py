@@ -1,3 +1,8 @@
+from ecommerce.gerenciamento import gerenciar_arquivos as arquivo
+from funcoes.produtos import ver_produtos
+from funcoes.pagamento import formas_pagamento
+from ecommerce.usuarios import validadores
+
 def menu_cliente():
     print("1- Ver produtos da loja\n2- Buscar um produto\n3- Ver meu carrinho\n4- Adicionar produto ao carrinho\n5- Fazer pedido\n6- Sair\n")
 
@@ -27,7 +32,7 @@ def fazer_pedido(usuario, nome_produto):
         print("Nenhum produto encontrado.\n")
         return
     else:
-        lista_produtos = AbrirArquivo.arquivo_r(Paths.save_produtos)
+        lista_produtos = arquivo.AbrirArquivo.arquivo_r(arquivo.Paths.save_produtos)
         for produto in lista_produtos:
             if produto['Nome'].lower() == nome_produto.lower():
                 produto_encontrado = produto
@@ -39,7 +44,7 @@ def fazer_pedido(usuario, nome_produto):
             print("\nSelecione a forma de pagamento:\n1- Pix\n2- Cartão de crédito\n3- Cancelar pagamento\n")
             pagamento = input()
             if pagamento == '1':
-                fazer_pagamento = pix(produto_encontrado)
+                fazer_pagamento = formas_pagamento.pix(produto_encontrado)
                 if fazer_pagamento:
                     print("Pagamento realizado com sucesso! Seu pedido estará a caminho em breve.\n")
                     break
@@ -48,7 +53,7 @@ def fazer_pedido(usuario, nome_produto):
                                 
             elif pagamento == '2':
                 print("INSIRA OS DADOS DO SEU CARTÃO\n")
-                fazer_pagamento = cartao()
+                fazer_pagamento = formas_pagamento.cartao()
                 if fazer_pagamento:
                     print("Pagamento realizado com sucesso! Seu pedido estará a caminho em breve.\n")
                     break
@@ -61,3 +66,35 @@ def fazer_pedido(usuario, nome_produto):
             
             else:
                 print("Opção inválida. Por favor, selecione uma das opções disponíveis.\n")
+
+def endereco():
+    while True:
+        try:
+            estado = input("Informe o nome do estado: ")
+            cidade = input("Informe o nome da cidade: ")
+            rua = input("Informe o nome da rua: ")
+            numero = input("Informe o número da residência: ")
+            bairro = input("Informe o nome do bairro: ")
+            validadores.ValidarEnderecoECartao.validar_endereço(estado, cidade, rua, numero, bairro)
+            return
+        except ValueError as erro:
+            print("Erro: ", erro, " Tente novamente.\n")
+            continue
+
+def opcao_selecionada_cliente(instancia_cliente, opcao_cliente):
+    if opcao_cliente == '1' or opcao_cliente == '2':
+        ver_produtos.ver_ou_buscar_produtos(instancia_cliente, opcao_cliente)
+                
+    elif opcao_cliente == '3':
+        ver_carrinho()
+                
+    elif opcao_cliente == '4':
+        nome_produto = input("Informe o nome do produto: ")
+        novo_produto_carrinho(nome_produto)
+                
+    elif opcao_cliente == '5':
+        nome_produto = input("Informe o nome do produto: ")
+        fazer_pedido(instancia_cliente, nome_produto)
+                
+    else:
+        print("Opção inválida. Por favor, selecione uma das opções disponíveis.\n")
